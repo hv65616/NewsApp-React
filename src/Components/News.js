@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewsItem from "./NewsItem";
+import Spinner from "./Spinner";
 
 export default class News extends Component {
   constructor() {
@@ -8,39 +9,46 @@ export default class News extends Component {
   }
 
   async componentDidMount() {
-    let url =
-      "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=d919b28ed32b43baad717e2c2d12d5ff&page=1&pageSize=20";
+    let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=d919b28ed32b43baad717e2c2d12d5ff&page=1&pageSize=${this.props.pageSize}`;
+    this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({
       articles: parsedData.articles,
       totalResults: parsedData.totalResults,
+      loading: false,
     });
   }
 
   previousHandleClick = async () => {
     let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=d919b28ed32b43baad717e2c2d12d5ff&page=${
       this.state.page - 1
-    }&pageSize=20`;
+    }&pageSize=${this.props.pageSize}`;
+    this.setState({ loading: true });
     let data = await fetch(url);
     let parsedData = await data.json();
     this.setState({
       page: this.state.page - 1,
       articles: parsedData.articles,
+      loading: false,
     });
   };
-  
+
   nextHandleClick = async () => {
-    if (this.state.page + 1 > Math.ceil(this.state.totalResults / 20)) {
-    } else {
+    if (
+      !this.state.page + 1 >
+      Math.ceil(this.state.totalResults / this.props.pageSize)
+    ) {
       let url = `https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=d919b28ed32b43baad717e2c2d12d5ff&page=${
         this.state.page + 1
-      }&pageSize=20`;
+      }&pageSize=${this.props.pageSize}`;
+      this.setState({ loading: true });
       let data = await fetch(url);
       let parsedData = await data.json();
       this.setState({
         page: this.state.page + 1,
         articles: parsedData.articles,
+        loading: false,
       });
     }
   };
@@ -50,6 +58,7 @@ export default class News extends Component {
       <div className="container my-3">
         <h3
           style={{
+            textAlign: "center",
             marginBottom: "10px",
             paddingTop: "5px",
             paddingBottom: "5px",
@@ -58,19 +67,23 @@ export default class News extends Component {
         >
           NewsInshort - Top Headlines
         </h3>
+        {this.state.loading && <Spinner></Spinner>}
         <div className="row">
-          {this.state.articles.map((element) => {
-            return (
-              <div className="col-md-3" key={element.url}>
-                <NewsItem
-                  title={element.title ? element.title : " "}
-                  description={element.description ? element.description : " "}
-                  imageUrl={element.urlToImage}
-                  newsUrl={element.url}
-                ></NewsItem>
-              </div>
-            );
-          })}
+          {!this.state.loading &&
+            this.state.articles.map((element) => {
+              return (
+                <div className="col-md-3" key={element.url}>
+                  <NewsItem
+                    title={element.title ? element.title : " "}
+                    description={
+                      element.description ? element.description : " "
+                    }
+                    imageUrl={element.urlToImage}
+                    newsUrl={element.url}
+                  ></NewsItem>
+                </div>
+              );
+            })}
         </div>
         <div className="d-flex justify-content-between">
           <button
@@ -82,6 +95,10 @@ export default class News extends Component {
             Previous
           </button>
           <button
+            disabled={
+              this.state.page + 1 >
+              Math.ceil(this.state.totalResults / this.props.pageSize)
+            }
             type="button"
             className="btn btn-dark"
             onClick={this.nextHandleClick}
