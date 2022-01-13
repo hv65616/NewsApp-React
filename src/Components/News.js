@@ -29,6 +29,7 @@ export default class News extends Component {
   }
 
   async updatedData() {
+    this.props.setProgress(10);
     let url = `https://newsapi.org/v2/top-headlines?country=us&category=${this.props.category}&apiKey=d919b28ed32b43baad717e2c2d12d5ff&page=1&pageSize=${this.props.pageSize}`;
     this.setState({ loading: true });
     let data = await fetch(url);
@@ -39,6 +40,7 @@ export default class News extends Component {
       totalResults: parsedData.totalResults,
       loading: false,
     });
+    this.props.setProgress(100);
   }
 
   async componentDidMount() {
@@ -126,15 +128,15 @@ export default class News extends Component {
           HeadLines
         </h3>
         {/* {this.state.loading && <Spinner></Spinner>} */}
-        
-          <InfiniteScroll
-            dataLength={this.state.articles.length}
-            next={this.fetchMoreData}
-            hasMore={
-              this.state.articles.length !== this.state.totalResults.length
-            }
-            loader={<Spinner></Spinner>}
-          >
+
+        <InfiniteScroll
+          dataLength={this.state.articles.length}
+          next={this.fetchMoreData}
+          hasMore={
+            this.state.articles.length !== this.state.totalResults.length
+          }
+          loader={<Spinner></Spinner>}
+        >
           <div className="container">
             <div className="row">
               {this.state.articles.map((element) => {
@@ -155,9 +157,9 @@ export default class News extends Component {
                 );
               })}
             </div>
-            </div>
-          </InfiniteScroll>
-        
+          </div>
+        </InfiniteScroll>
+
         {/* <div className="d-flex justify-content-between">
           <button
             type="button"
