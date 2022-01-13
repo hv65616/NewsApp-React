@@ -126,7 +126,7 @@ export default class News extends Component {
           HeadLines
         </h3>
         {/* {this.state.loading && <Spinner></Spinner>} */}
-        <div className="container">
+        
           <InfiniteScroll
             dataLength={this.state.articles.length}
             next={this.fetchMoreData}
@@ -135,6 +135,7 @@ export default class News extends Component {
             }
             loader={<Spinner></Spinner>}
           >
+          <div className="container">
             <div className="row">
               {this.state.articles.map((element) => {
                 return (
@@ -154,8 +155,9 @@ export default class News extends Component {
                 );
               })}
             </div>
+            </div>
           </InfiniteScroll>
-        </div>
+        
         {/* <div className="d-flex justify-content-between">
           <button
             type="button"
