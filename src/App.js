@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
 export default class App extends Component {
   pageSize = 8;
+  apikey = "d919b28ed32b43baad717e2c2d12d5ff";
   state = {
     progress: 10,
   };
@@ -31,6 +32,7 @@ export default class App extends Component {
                 key="general"
                 pageSize={this.pageSize}
                 category="general"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/general">
@@ -39,6 +41,7 @@ export default class App extends Component {
                 key="general"
                 pageSize={this.pageSize}
                 category="general"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/business">
@@ -47,6 +50,7 @@ export default class App extends Component {
                 key="business"
                 pageSize={this.pageSize}
                 category="business"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/entertainment">
@@ -55,6 +59,7 @@ export default class App extends Component {
                 key="entertainment"
                 pageSize={this.pageSize}
                 category="entertainment"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/health">
@@ -63,6 +68,7 @@ export default class App extends Component {
                 key="health"
                 pageSize={this.pageSize}
                 category="health"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/science">
@@ -71,6 +77,7 @@ export default class App extends Component {
                 key="science"
                 pageSize={this.pageSize}
                 category="science"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/sports">
@@ -79,6 +86,7 @@ export default class App extends Component {
                 key="sports"
                 pageSize={this.pageSize}
                 category="sports"
+                apikey={this.apikey}
               ></News>
             </Route>
             <Route exact path="/technology">
@@ -87,6 +95,7 @@ export default class App extends Component {
                 key="technology"
                 pageSize={this.pageSize}
                 category="technology"
+                apikey={this.apikey}
               ></News>
             </Route>
           </Switch>
